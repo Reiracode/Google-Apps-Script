@@ -37,32 +37,7 @@
 
  
 
-## 系統架構與作業流程
-
-### 1. POST /doPost 通知廠商流程
-```
-BPM System → Google Apps Script API → Google Forms → Google Sheet → 郵件通知廠商
-```
-
-**流程說明**：
-1. BPM 系統產品異常，透過 POST API 傳送異常資料
-2. Google Apps Script 接收資料，自動創建客製化表單，內崁圖片
-3. 系統自動寄送表單連結給廠商
-4. 廠商填寫異常處理回覆（原因分析、矯正措施、預防措施等）
-5. 表單提交後自動記錄至試算表
-6. 系統自動通知相關人員（採購、品保）
-
-### 2. GET 確認資料流程
-```
-BPM System → Google Apps Script API → 廠商回應資料 → Google Sheet →  郵件通知人員確認 → BPM System
-```
-
-**流程說明**：
-1. BPM 系統確認廠商回應狀態時，透過 GET API 查詢
-2. Google Apps Script 從試算表中搜尋對應單號的廠商回應資料
-3. 系統回傳最新的廠商回應內容（包含處理說明、聯絡人、各項措施等）
-
-## 配置設定
+## 系統架構與配置設定
 
 ### CONFIG 常數說明
 
@@ -79,7 +54,11 @@ const CONFIG = {
 
 ## API 介接規格
 
-### 1. doPost() - 創建表單 API  
+### 1. POST / doPost() 
+
+```
+BPM System → Google Apps Script API → Google Forms → Google Sheet → 郵件通知廠商
+```
 
 **端點**: `https://script.google.com/macros/s/{SCRIPT_ID}/exec`  
 
@@ -89,12 +68,13 @@ const CONFIG = {
 
 **用途**: 供 BPM 系統傳送異常資料，自動創建表單並通知廠商  
 
+**流程說明**：
+1. BPM 透過 POST API 創建客製化內崁圖片的異常回覆表單
+2. 系統自動寄送表單連結給指定廠商
+3. 廠商填寫異常處理回覆（原因分析...）
+4. 表單提交後記錄異常處理資訊至試算表
+5. 系統自動通知相關人員（採購、品保）
 
-#### 使用場景
-- BPM 系統 - 產品異常需要廠商回覆
-- 自動創建客製化的異常回覆表單
-- 寄送表單連結給指定廠商
-- 記錄異常處理資訊
 
 #### 請求參數
 
@@ -146,20 +126,24 @@ const CONFIG = {
 }
 ```
 
-### 2. doGet() - 查詢廠商回應 API
+### 2.  GET / doGet() - 查詢廠商回應 API
+
+```
+BPM System → Google Apps Script API → 廠商回應資料 → Google Sheet →  郵件通知人員確認 → BPM System
+```
 
 **端點**: `https://script.google.com/macros/s/{SCRIPT_ID}/exec?ticketNo={TICKET_NO}`  
 
 **方法**: GET  
 
 **用途**: 供 BPM 系統查詢廠商回應資料，確認異常處理狀態  
-
-#### 使用場景
-- BPM 系統確認廠商回覆異常處理
-- 查詢廠商回應的具體內容（原因分析、矯正措施等）
-- 更新 BPM 系統產品異常 責任單位回覆
-- 進行後續品保追蹤作業
-
+ 
+**流程說明**：
+1. 收到GMAIL 廠商回覆通知後，於BPM 透過 GET API 查詢，確認廠商回應內容
+2. Google Apps Script 從試算表中搜尋對應單號的最新一筆的廠商回應資料
+3. 系統回傳最新的廠商回應內容（包含處理說明、聯絡人、各項措施等）至BPM 表單內容
+4. 進行後續品保追蹤作業
+   
 #### 請求參數
 
 | 參數名稱 | 類型 | 必填 | 說明 |
