@@ -6,9 +6,9 @@
 
 ##  開發目的 | Purpose
 
-- 減少人工建立 Google 表單與通知流程  
-- 提供標準 API，建立及查詢異常資料
-- 使用 GmailApp.sendEmai 寄送異常資料及廠商回覆通知  
+- 自動建立內崁圖片的Google 表單與通知流程  
+- 提供標準 API，用於建立及查詢異常回資料
+- 使用 GmailApp.sendEmai 寄送異常通報及廠商回覆通知  
   
 
 ##  主要功能 | Key Features
