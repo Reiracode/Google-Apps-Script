@@ -1,4 +1,4 @@
-# Google Apps Script — 產品異常回覆自動化系統  
+# Google Apps Script — 異常回覆自動化系統  
 
 以 Google Apps Script 為基礎，整合 Google Forms、Sheets、Email 與 Web API，專為 BPM 系統建置的自動化回覆平台。  
 
